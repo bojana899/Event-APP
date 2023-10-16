@@ -24,14 +24,15 @@ function List({ match }) {
     return (
         <div>
             <h1>Events</h1>
-            <Link to={`${path}/add`} className="btn btn-sm btn-success mb-2">Add Event</Link>
+            <Link to={`${path}/add`} className="btn btn-sm btn-success mb-2">Add User Activities</Link>
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th style={{ width: '25%' }}>Name</th>
-                        <th style={{ width: '25%' }}>Description</th>
-                        <th style={{ width: '25%' }}>Date</th>
-                        <th style={{ width: '20%' }}>Time spent</th>
+                        <th style={{ width: '20%' }}>Name</th>
+                        <th style={{ width: '20%' }}>Description</th>
+                        <th style={{ width: '15%' }}>Date from</th>
+                        <th style={{ width: '15%' }}>Date to</th>
+                        <th style={{ width: '10%' }}>Time spent</th>
 
                     </tr>
                 </thead>
@@ -41,6 +42,7 @@ function List({ match }) {
                             <td>{event.name}</td>
                             <td>{event.description}</td>
                             <td>{event.dateOfEvent}</td>
+                            <td>{event.dateToEvent}</td>
                             <td>{event.timeSpent}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
                                 <Link to={`${path}/edit/${event.id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>

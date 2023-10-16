@@ -4,9 +4,10 @@ export function configureFakeBackendEvents() {
     // array in local storage for event records
     let events = JSON.parse(localStorage.getItem('events')) || [{
         id: 1,
-        name: 'Event',
+        name: 'User Activities',
         description: 'Joe',
         dateOfEvent: '1989-12-12',
+        dateToEvent: '1989-12-12',
         timeSpent: '00:00',
 
     }];

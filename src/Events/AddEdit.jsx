@@ -13,6 +13,7 @@ function AddEdit({ history, match }) {
         name: '',
         description: '',
         dateOfEvent: '',
+        dateToEvent: '',
         timeSpent: '',
 
 
@@ -44,7 +45,7 @@ function AddEdit({ history, match }) {
         debugger;
         eventService.create(fields)
             .then(() => {
-                alertService.success('Event added', { keepAfterRouteChange: true });
+                alertService.success('User Activities added', { keepAfterRouteChange: true });
                 history.push('.');
             })
             .catch(() => {
@@ -57,7 +58,7 @@ function AddEdit({ history, match }) {
 
         eventService.update(id, fields)
             .then(() => {
-                alertService.success('Event updated', { keepAfterRouteChange: true });
+                alertService.success('User Activities updated', { keepAfterRouteChange: true });
                 history.push('..');
             })
             .catch(error => {
@@ -76,7 +77,7 @@ function AddEdit({ history, match }) {
                     if (!isAddMode) {
 
                         eventService.getById(id).then(event => {
-                            const fields = ['name', 'description', 'dateOfEvent', 'timeSpent'];
+                            const fields = ['name', 'description', 'dateOfEvent', 'dateToEvent', 'timeSpent'];
                             fields.forEach(field => setFieldValue(field, event[field], false));
                             setEvent(event);
                         });
@@ -85,7 +86,7 @@ function AddEdit({ history, match }) {
 
                 return (
                     <Form>
-                        <h1>{isAddMode ? 'Add Event' : 'Edit Event'}</h1>
+                        <h1>{isAddMode ? 'Add User Activities' : 'Edit User Activities'}</h1>
                         <div className="form-row">
 
                             <div className="form-group col-4">
@@ -100,11 +101,20 @@ function AddEdit({ history, match }) {
                             </div>
 
                             <div className="form-group col-4">
-                                <label>Date</label>
+                                <label>Date from</label>
                                 <Field value={values.dateOfEvent}
                                     onChange={e => {
                                         setFieldValue("dateOfEvent", e.target.value);
                                     }} name="dateOfEvent" type="date" className={'form-control' + (errors.dateOfEvent && touched.dateOfEvent ? ' is-invalid' : '')}
+                                />
+                            </div>
+
+                            <div className="form-group col-4">
+                                <label>Date to</label>
+                                <Field value={values.dateToEvent}
+                                    onChange={e => {
+                                        setFieldValue("dateToEvent", e.target.value);
+                                    }} name="dateToEvent" type="date" className={'form-control' + (errors.dateToEvent && touched.dateOfEvent ? ' is-invalid' : '')}
                                 />
                             </div>
 
