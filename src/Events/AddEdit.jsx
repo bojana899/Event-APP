@@ -13,6 +13,7 @@ function AddEdit({ history, match }) {
         name: '',
         description: '',
         dateOfEvent: '',
+        timeSpent: '',
 
 
     };
@@ -24,6 +25,9 @@ function AddEdit({ history, match }) {
             .required('Description Name is required'),
         dateOfEvent: Yup.string()
             .required('Date is required'),
+        timeSpent: Yup.string()
+            .required('Time is required')
+            .min(0, "Time spent must be greater than or equal to 0")
 
     });
 
@@ -45,7 +49,7 @@ function AddEdit({ history, match }) {
             })
             .catch(() => {
                 setSubmitting(false);
-                // alertService.error(error);
+                alertService.error(error);
             });
     }
 
@@ -72,7 +76,7 @@ function AddEdit({ history, match }) {
                     if (!isAddMode) {
 
                         eventService.getById(id).then(event => {
-                            const fields = ['name', 'description', 'dateOfEvent'];
+                            const fields = ['name', 'description', 'dateOfEvent', 'timeSpent'];
                             fields.forEach(field => setFieldValue(field, event[field], false));
                             setEvent(event);
                         });
@@ -102,6 +106,21 @@ function AddEdit({ history, match }) {
                                         setFieldValue("dateOfEvent", e.target.value);
                                     }} name="dateOfEvent" type="date" className={'form-control' + (errors.dateOfEvent && touched.dateOfEvent ? ' is-invalid' : '')}
                                 />
+                            </div>
+
+                            <div className="form-group col-4">
+                                <label>Time Spent (in hours):</label>
+                                <Field value={values.timeSpent}
+                                    onChange={e => {
+                                        setFieldValue("timeSpent", e.target.value);
+                                    }}
+                                    name="timeSpent"
+                                    type="number"
+                                    id="timeSpent"
+                                    min="0"
+                                    step="0.5" className={'form-control' + (errors.timeSpent && touched.timeSpent ? ' is-invalid' : '')}
+                                />
+                                <ErrorMessage name="timeSpent" component="div" className="invalid-feedback" />
                             </div>
                         </div>
 

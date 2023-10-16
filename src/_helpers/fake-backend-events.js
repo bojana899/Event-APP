@@ -7,6 +7,7 @@ export function configureFakeBackendEvents() {
         name: 'Event',
         description: 'Joe',
         dateOfEvent: '1989-12-12',
+        timeSpent: '00:00',
 
     }];
 

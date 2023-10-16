@@ -28,9 +28,10 @@ function List({ match }) {
             <table className="table table-striped">
                 <thead>
                     <tr>
-                        <th style={{ width: '30%' }}>Name</th>
-                        <th style={{ width: '30%' }}>Description</th>
-                        <th style={{ width: '30%' }}>Date</th>
+                        <th style={{ width: '25%' }}>Name</th>
+                        <th style={{ width: '25%' }}>Description</th>
+                        <th style={{ width: '25%' }}>Date</th>
+                        <th style={{ width: '20%' }}>Time spent</th>
 
                     </tr>
                 </thead>
@@ -40,6 +41,7 @@ function List({ match }) {
                             <td>{event.name}</td>
                             <td>{event.description}</td>
                             <td>{event.dateOfEvent}</td>
+                            <td>{event.timeSpent}</td>
                             <td style={{ whiteSpace: 'nowrap' }}>
                                 <Link to={`${path}/edit/${event.id}`} className="btn btn-sm btn-primary mr-1">Edit</Link>
                                 <button onClick={() => deleteEvent(event.id)} className="btn btn-sm btn-danger btn-delete-event" disabled={event.isDeleting}>
