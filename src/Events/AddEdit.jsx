@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 
-import { eventService, alertService } from '../_services';
+import { eventService, alertService, mailService } from '../_services';
 
 function AddEdit({ history, match }) {
     const { id } = match.params;
@@ -28,21 +28,41 @@ function AddEdit({ history, match }) {
             .required('Date is required'),
         timeSpent: Yup.string()
             .required('Time is required')
-            .min(0, "Time spent must be greater than or equal to 0")
+            .min(0, "Time spent must be greater than or equal to 0"),
+        report: Yup.string()
+            .required('Report is required'),
 
     });
 
+    // function onSubmit(fields, { setStatus, setSubmitting }) {
+    //     setStatus();
+    //     if (isAddMode) {
+    //         createEvent(fields, setSubmitting);
+    //     } else {
+    //         updateEvent(id, fields, setSubmitting);
+    //     }
+    // }
+
     function onSubmit(fields, { setStatus, setSubmitting }) {
         setStatus();
+
         if (isAddMode) {
+            // Create new event
             createEvent(fields, setSubmitting);
+
+            // Send report
+            sendReport(fields, setSubmitting);
         } else {
+            // Update existing event
             updateEvent(id, fields, setSubmitting);
+
+            // Send report
+            sendReport(fields, setSubmitting);
         }
     }
 
     function createEvent(fields, setSubmitting) {
-        debugger;
+
         eventService.create(fields)
             .then(() => {
                 alertService.success('User Activities added', { keepAfterRouteChange: true });
@@ -66,6 +86,31 @@ function AddEdit({ history, match }) {
                 alertService.error(error);
             });
     }
+
+    function sendReport() {
+        mailService = async (values, { resetForm }) => {
+            try {
+                const response = await fetch("/send-email", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(values),
+                });
+
+                if (response.ok) {
+                    console.log("Email sent successfully");
+                } else {
+                    console.error("Failed to send email");
+                }
+            } catch (error) {
+                console.error("Network error:", error);
+            }
+
+            resetForm();
+        };
+
+    };
 
     return (
         <Formik initialValues={initialValues} validationSchema={validationSchema} onSubmit={onSubmit}>
@@ -131,6 +176,11 @@ function AddEdit({ history, match }) {
                                     step="0.5" className={'form-control' + (errors.timeSpent && touched.timeSpent ? ' is-invalid' : '')}
                                 />
                                 <ErrorMessage name="timeSpent" component="div" className="invalid-feedback" />
+                            </div>
+                            <div className="form-group col-4">
+                                <label> Report</label>
+                                <Field name="report" as="textarea" className={'form-control' + (errors.report && touched.report ? ' is-invalid' : '')} />
+                                <ErrorMessage name="name" component="div" className="invalid-feedback" />
                             </div>
                         </div>
 
